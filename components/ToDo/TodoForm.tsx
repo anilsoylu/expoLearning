@@ -4,16 +4,17 @@ import { useTodoStore } from "../../stores/todoStore"
 type Props = {}
 
 export const TodoForm = () => {
-  const [text, setText] = useState("")
+  const [title, setTitle] = useState("")
   const { addTodo } = useTodoStore()
 
   const handleAddTodo = () => {
-    if (text.trim() !== "") {
-      const newTodo = { id: Date.now(), text, completed: false }
+    if (title.trim() !== "") {
+      const newTodo = { id: Date.now(), title, completed: false }
       addTodo(newTodo)
-      setText("")
+      setTitle("")
     }
   }
+
   return (
     <Card
       style={{
@@ -27,8 +28,8 @@ export const TodoForm = () => {
       <TextInput
         style={{ marginTop: 15, marginBottom: 15 }}
         placeholder="Add Todo"
-        value={text}
-        onChangeText={setText}
+        value={title}
+        onChangeText={setTitle}
       />
       <Button
         mode="contained"

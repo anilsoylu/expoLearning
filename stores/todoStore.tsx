@@ -1,8 +1,9 @@
+import axios from "axios"
 import { create } from "zustand"
 
 type Todo = {
   id: number
-  text: string
+  title: string
   completed: boolean
 }
 
@@ -16,27 +17,16 @@ type TodoStore = {
 
 export const useTodoStore = create<TodoStore>((set) => ({
   todos: [],
-  fetchTodos: () => {
-    // Fake JSON veritabanından verileri al
-    const todosFromDB: Todo[] = [
-      {
-        id: 1,
-        text: "Learn React Native",
-        completed: false,
-      },
-      {
-        id: 2,
-        text: "Learn TypeScript",
-        completed: false,
-      },
-      {
-        id: 3,
-        text: "Learn Zustand",
-        completed: false,
-      },
-    ]
-
-    set({ todos: todosFromDB })
+  fetchTodos: async () => {
+    try {
+      const response = await axios.get(
+        "https://jsonplaceholder.typicode.com/todos"
+      )
+      const todosFromDB: Todo[] = response.data
+      set({ todos: todosFromDB })
+    } catch (error) {
+      console.error("Error fetching todos:", error)
+    }
   },
   addTodo: (todo: Todo) => {
     set((state) => ({
@@ -52,7 +42,6 @@ export const useTodoStore = create<TodoStore>((set) => ({
             completed: !todo.completed,
           }
         }
-
         return todo
       }),
     }))
