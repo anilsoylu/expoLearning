@@ -1,41 +1,33 @@
 import React, { useEffect } from "react"
-import { Card, List, IconButton } from "react-native-paper"
+import { Card, List, IconButton, ActivityIndicator } from "react-native-paper"
 import { useTodoStore } from "../../stores/todoStore"
 import { ScrollView } from "react-native"
-import { ActivityIndicator, MD2Colors } from "react-native-paper"
 
 type Props = {}
 
 export const TodoList = (props: Props) => {
   const { todos, fetchTodos, deleteTodo, checkTodo } = useTodoStore()
 
-  // loading
-
   useEffect(() => {
     fetchTodos()
   }, [])
 
-  const handleDeleteTodo = (id: number) => {
+  const handleDeleteTodo = (id: string) => {
     deleteTodo(id)
   }
 
-  const handleCheckTodo = (id: number) => {
+  const handleCheckTodo = (id: string) => {
     checkTodo(id)
   }
 
   return (
-    // loading
     <ScrollView>
       {todos.length === 0 ? (
-        <ActivityIndicator
-          animating={true}
-          color={MD2Colors.pinkA200}
-          size="large"
-        />
+        <ActivityIndicator animating={true} color="pink" size="large" />
       ) : (
-        todos.map((todo) => (
+        todos.map((todo, index) => (
           <Card
-            key={todo.id}
+            key={todo.id ? String(todo.id) : `todo_${index}`} // Benzersiz anahtar propu
             style={{
               backgroundColor: "transparent",
               borderRadius: 0,
@@ -45,15 +37,18 @@ export const TodoList = (props: Props) => {
           >
             <List.Item
               title={todo.title}
-              onPress={() => handleCheckTodo}
+              onPress={() => handleCheckTodo(todo.id)}
               left={() => (
                 <IconButton
                   icon={todo.completed ? "check-circle" : "circle-outline"}
-                  onPress={() => handleCheckTodo}
+                  onPress={() => handleCheckTodo(todo.id)}
                 />
               )}
               right={() => (
-                <IconButton icon="delete" onPress={() => handleDeleteTodo} />
+                <IconButton
+                  icon="delete"
+                  onPress={() => handleDeleteTodo(todo.id)}
+                />
               )}
             />
           </Card>

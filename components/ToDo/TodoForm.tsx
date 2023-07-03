@@ -1,16 +1,23 @@
 import React, { useState } from "react"
 import { Card, TextInput, Button } from "react-native-paper"
 import { useTodoStore } from "../../stores/todoStore"
-type Props = {}
+import { v4 as uuidv4 } from "uuid"
 
 export const TodoForm = () => {
   const [title, setTitle] = useState("")
   const { addTodo } = useTodoStore()
 
-  const handleAddTodo = () => {
+  const handleAddTodo = async () => {
     if (title.trim() !== "") {
-      const newTodo = { id: Date.now(), title, completed: false }
-      addTodo(newTodo)
+      const newTodo = {
+        id: uuidv4(), // Benzersiz UUID değeri oluşturma
+        title,
+        completed: false,
+        currentDate: new Date(),
+        updateDate: new Date(),
+      }
+
+      await addTodo(newTodo)
       setTitle("")
     }
   }
