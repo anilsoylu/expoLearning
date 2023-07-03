@@ -20,7 +20,7 @@ export const useTodoStore = create<TodoStore>((set) => ({
   fetchTodos: async () => {
     try {
       const response = await axios.get(
-        "https://jsonplaceholder.typicode.com/todos"
+        "https://github.com/anilsoylu/expoLearning/blob/main/db.json"
       )
       const todosFromDB: Todo[] = response.data
       set({ todos: todosFromDB })
