@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import { useTodoStore } from "../stores/todoStore"
-import { Button, TextInput, View } from "react-native"
-
+import { Card, TextInput, Button } from "react-native-paper"
 type Props = {}
 
 export const TodoForm = () => {
@@ -16,14 +15,31 @@ export const TodoForm = () => {
     }
   }
   return (
-    <View>
+    <Card
+      style={{
+        backgroundColor: "transparent",
+        borderRadius: 0,
+        padding: 0,
+        marginBottom: 25,
+      }}
+    >
+      <Card.Title titleVariant="displayMedium" title="Add Todo" />
       <TextInput
-        style={{ flex: 1, marginRight: 10 }}
+        style={{ marginTop: 15, marginBottom: 15 }}
         placeholder="Add Todo"
         value={text}
         onChangeText={setText}
       />
-      <Button title="Add Todo" onPress={handleAddTodo} />
-    </View>
+      <Button
+        mode="contained"
+        onPress={handleAddTodo}
+        style={{
+          borderRadius: 0,
+          backgroundColor: "blue",
+        }}
+      >
+        Add Todo
+      </Button>
+    </Card>
   )
 }

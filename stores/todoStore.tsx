@@ -1,4 +1,4 @@
-import create from "zustand"
+import { create } from "zustand"
 
 type Todo = {
   id: number
@@ -11,6 +11,7 @@ type TodoStore = {
   fetchTodos: () => void
   addTodo: (todo: Todo) => void
   deleteTodo: (id: number) => void
+  checkTodo: (id: number) => void
 }
 
 export const useTodoStore = create<TodoStore>((set) => ({
@@ -39,6 +40,20 @@ export const useTodoStore = create<TodoStore>((set) => ({
   addTodo: (todo: Todo) => {
     set((state) => ({
       todos: [...state.todos, todo],
+    }))
+  },
+  checkTodo: (id: number) => {
+    set((state) => ({
+      todos: state.todos.map((todo) => {
+        if (todo.id === id) {
+          return {
+            ...todo,
+            completed: !todo.completed,
+          }
+        }
+
+        return todo
+      }),
     }))
   },
   deleteTodo: (id: number) => {
